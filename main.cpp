@@ -23,7 +23,6 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
 	
@@ -32,7 +31,6 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	{ 
 		short int pos = data.find(" ");
 		materias[cant].setID(strtol(data.substr(0,pos).c_str(), NULL, 10));
-		cout << materias[cant].getID() << endl;
 		materias[cant++].setNombre(data.substr(pos + 1));
 	}
 
@@ -46,9 +44,19 @@ bool getData(string fileName, Tema temas[5], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
+	string data;
+	while(getline(inFile, data))
+	{ 
+		short int pos = data.find(" ");
+		temas[cant].setIDTema(strtol(data.substr(0,pos).c_str(), NULL, 10));
+		short int pos2 = data.find(" ", pos+1);
+		temas[cant].setIDMateria(strtol(data.substr(pos+1,pos2).c_str(), NULL, 10));
+		temas[cant++].setNombre(data.substr(pos2 + 1));
+	}
+
+	return true;
 }
 
 bool getData(string fileName, Autor autores[10], short int &cant)
@@ -58,9 +66,17 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
+	string data;
+	while(getline(inFile, data))
+	{ 
+		short int pos = data.find(" ");
+		autores[cant].setIDAutor(strtol(data.substr(0,pos).c_str(), NULL, 10));
+		autores[cant++].setNombre(data.substr(pos + 1));
+	}
+
+	return true;
 }
 
 bool getData(string fileName, EjemploVideo videos[20], short int &cant)
@@ -70,9 +86,41 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
+	int data;
+	while(inFile >>  data)
+	{ 
+		videos[cant].setIDVideo(data);
+
+		string nombre;
+		inFile >> nombre;
+		videos[cant].setNombre(nombre);
+
+		inFile >> data;
+		videos[cant].setIDTema(data);
+
+		int d, m, a;
+		inFile >> d;
+		inFile >> m;
+		inFile >> a;
+
+		Fecha fechaElab;
+		fechaElab.setFecha(d, m, a);
+		videos[cant].setfechaElaboracion(fechaElab);
+
+		int autorCount;
+		inFile >> autorCount;
+		while (autorCount > 0)
+		{ 
+			inFile >> data;
+			videos[cant].agregaAutor(data);
+			autorCount--;
+		}
+		cant++;
+
+	}
+	return true;
 }
 /* main
  * Llama todas las otras funciones
@@ -129,6 +177,6 @@ int main()
 		i++;
 	}
 	
-	menu();
+	//menu();
 	return 0;
 }
