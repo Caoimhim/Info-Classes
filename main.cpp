@@ -23,7 +23,6 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
 	
@@ -45,7 +44,6 @@ bool getData(string fileName, Tema temas[5], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
 	string data;
@@ -68,7 +66,6 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
 	string data;
@@ -89,9 +86,41 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant)
 	inFile.open(fileName.c_str());
 	if(!inFile.is_open())
 	{ 
-		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
+	int data;
+	while(inFile >>  data)
+	{ 
+		videos[cant].setIDVideo(data);
+
+		string nombre;
+		inFile >> nombre;
+		videos[cant].setNombre(nombre);
+
+		inFile >> data;
+		videos[cant].setIDTema(data);
+
+		int d, m, a;
+		inFile >> d;
+		inFile >> m;
+		inFile >> a;
+
+		Fecha fechaElab;
+		fechaElab.setFecha(d, m, a);
+		videos[cant].setfechaElaboracion(fechaElab);
+
+		int autorCount;
+		inFile >> autorCount;
+		while (autorCount > 0)
+		{ 
+			inFile >> data;
+			videos[cant].agregaAutor(data);
+			autorCount--;
+		}
+		cant++;
+
+	}
+	return true;
 }
 /* main
  * Llama todas las otras funciones
@@ -148,6 +177,6 @@ int main()
 		i++;
 	}
 	
-	menu();
+	//menu();
 	return 0;
 }

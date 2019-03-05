@@ -84,21 +84,21 @@ void EjemploVideo::setfechaElaboracion(Fecha newFecha)
 
 bool EjemploVideo::agregaAutor(int newAutor)
 { 
-	if (newAutor > 10 )
+	if (cantidadAutores > 9 )
 	{ 
 		return false;
 	}
 	else
 	{ 
-		for (char i = 0; i < cantidadAutores; i++ )
+		for (unsigned char i = 0; i <= cantidadAutores; i++ )
 		{ 
 			if (newAutor == listaAutores[i])
 			{ 
 				return false;
 			}
 		}
-		cantidadAutores++;
 		listaAutores[cantidadAutores] = newAutor;
+		cantidadAutores++;
 		return true;
 	}
 }
