@@ -71,6 +71,15 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
+	string data;
+	while(getline(inFile, data))
+	{ 
+		short int pos = data.find(" ");
+		autores[cant].setIDAutor(strtol(data.substr(0,pos).c_str(), NULL, 10));
+		autores[cant++].setNombre(data.substr(pos + 1));
+	}
+
+	return true;
 }
 
 bool getData(string fileName, EjemploVideo videos[20], short int &cant)
