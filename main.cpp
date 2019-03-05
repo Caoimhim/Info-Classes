@@ -32,7 +32,6 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	{ 
 		short int pos = data.find(" ");
 		materias[cant].setID(strtol(data.substr(0,pos).c_str(), NULL, 10));
-		cout << materias[cant].getID() << endl;
 		materias[cant++].setNombre(data.substr(pos + 1));
 	}
 
@@ -49,6 +48,17 @@ bool getData(string fileName, Tema temas[5], short int &cant)
 		cout << "No se encontró el archivo." << endl;
 		return false;
 	}
+	string data;
+	while(getline(inFile, data))
+	{ 
+		short int pos = data.find(" ");
+		temas[cant].setIDTema(strtol(data.substr(0,pos).c_str(), NULL, 10));
+		short int pos2 = data.find(" ", pos+1);
+		temas[cant].setIDMateria(strtol(data.substr(pos+1,pos2).c_str(), NULL, 10));
+		temas[cant++].setNombre(data.substr(pos2 + 1));
+	}
+
+	return true;
 }
 
 bool getData(string fileName, Autor autores[10], short int &cant)
