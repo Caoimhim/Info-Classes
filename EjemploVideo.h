@@ -97,8 +97,7 @@ bool EjemploVideo::agregaAutor(int newAutor)
 				return false;
 			}
 		}
-		listaAutores[cantidadAutores] = newAutor;
-		cantidadAutores++;
+		listaAutores[cantidadAutores++] = newAutor;
 		return true;
 	}
 }
