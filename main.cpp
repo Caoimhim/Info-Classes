@@ -15,7 +15,7 @@ using namespace std;
  * Inputs: El arreglo de temas a revisar
  * Outputs: Verdadero o Falso
  */
-bool checkExists(int tema, Tema temas[30], short int cant)
+bool checkExists(int tema, Tema temas[10], short int cant)
 { 
 	for(short int i = 0; i < cant; i++)
 	{ 
@@ -27,7 +27,7 @@ bool checkExists(int tema, Tema temas[30], short int cant)
 	return false;
 }
 
-bool checkExists(int autor, Autor autores[30], short int cant)
+bool checkExists(int autor, Autor autores[10], short int cant)
 { 
 	for(short int i = 0; i < cant; i++)
 	{ 
@@ -61,13 +61,18 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	{ 
 		short int pos = data.find(" ");
 		materias[cant].setID(strtol(data.substr(0,pos).c_str(), NULL, 10));
-		materias[cant++].setNombre(data.substr(pos + 1));
+		string nombre = (data.substr(pos + 1));
+		if (nombre[nombre.length() - 1] == '\r')
+		{ 
+			nombre.pop_back();
+		}
+		materias[cant++].setNombre(nombre);
 	}
 
 	return true;
 }
 
-bool getData(string fileName, Tema temas[5], short int &cant)
+bool getData(string fileName, Tema temas[10], short int &cant)
 { 
 	cant = 0;
 	ifstream inFile;
@@ -83,7 +88,12 @@ bool getData(string fileName, Tema temas[5], short int &cant)
 		temas[cant].setIDTema(strtol(data.substr(0,pos).c_str(), NULL, 10));
 		short int pos2 = data.find(" ", pos+1);
 		temas[cant].setIDMateria(strtol(data.substr(pos+1,pos2).c_str(), NULL, 10));
-		temas[cant++].setNombre(data.substr(pos2 + 1));
+		string nombre = (data.substr(pos2 + 1));
+		if (nombre[nombre.length() - 1] == '\r')
+		{ 
+			nombre.pop_back();
+		}
+		temas[cant++].setNombre(nombre);
 	}
 
 	return true;
@@ -103,7 +113,12 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 	{ 
 		short int pos = data.find(" ");
 		autores[cant].setIDAutor(strtol(data.substr(0,pos).c_str(), NULL, 10));
-		autores[cant++].setNombre(data.substr(pos + 1));
+		string nombre = (data.substr(pos + 1));
+		if (nombre[nombre.length() - 1] == '\r')
+		{ 
+			nombre.pop_back();
+		}
+		autores[cant++].setNombre(nombre);
 	}
 
 	return true;
@@ -172,16 +187,24 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 void mostrarMaterias(Materia materias[5], short int cantMaterias)
 { 
 	cout << "\tMaterias" << endl;
+	cout << "ID\tNombre" << endl;
 	for(unsigned char i = 0; i < cantMaterias; i++)
 	{ 
-		cout << "ID: " << materias[i].getID() << "\tNombre: " << materias[i].getNombre() << endl;
+		cout <<  materias[i].getID() << '\t' << materias[i].getNombre() << endl;
 	}
+	cout << endl;
 	
 }
 
 void mostrarTemas(Tema temas[10], short int cantTemas)
 { 
-	
+	cout << "\tTemas" << endl;
+	cout << "ID\tID de materia\t\tNombre" << endl;
+	for (unsigned char i = 0; i < cantTemas; i++)
+	{ 
+		cout << temas[i].getIDTema() << '\t' << temas[i].getIDMateria() << "\t\t" << temas[i].getNombre() << endl;
+	}
+	cout << endl;
 }
 
 void mostrarAutores(Autor autores[10], short int cantAutores);
@@ -216,13 +239,14 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 		cout << "Seleccione m para mostrar información sobre videos por tema" << endl;
 		cout << "Seleccione l para mostar la lista de los videos registrados" << endl;
 		cout << "Seleccione a para mostrar información sobre videos por autor" << endl;
+		cout << "Seleccione q para salir" << endl;
 		cin >> option;
 		int id;
 		switch(option)
 		{ 
 			case 'p':
 				mostrarMaterias(materias, cantMaterias);
-				//mostrarTemas(temas, cantTemas);
+				mostrarTemas(temas, cantTemas);
 				//mostrarAutores(autores, cantAutores);
 				break;
 			case 's':
