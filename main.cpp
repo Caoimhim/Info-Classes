@@ -194,6 +194,83 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	return true;
 }
 
+void mostrarMaterias(Materia materias[5], short int cantMaterias);
+
+void mostrarTemas(Tema temas[10], short int cantTemas);
+
+void mostrarAutores(Autor autores[10], short int cantAutores);
+
+void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Materia materias[5], short int cantMaterias);
+
+void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Autor auotres[10], short int cantAutores);
+
+void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas);
+
+void agregarVideo(EjemploVideo videos[20], short int cantVideos, Materia materias[5], short int cantMaterias, Autor autores[10], short int cantAutores);
+
+void listarVideos(EjemploVideo videos[20], short int cantVideos);
+
+
+
+/* menu
+ * muesta el menú y llama las funciones requeridas para hacer las operaciones necesarias
+ * Inputs: Los datos de materias, temas, autores, y videos
+ * Outputs: Puede modificiar los arreglos de información
+ */
+void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, EjemploVideo videos[20], short int &cantVideos)
+{ 
+	cout << endl;
+	bool running = true;
+	while (running)
+	{ 
+		char option;
+		cout << "Seleccione p para mostrar la información de autores, materias y temas" << endl;
+		cout << "Seleccione s para añadir un video" << endl;
+		cout << "Seleccione t para mostrar información sobre videos por tema" << endl;
+		cout << "Seleccione m para mostrar información sobre videos por tema" << endl;
+		cout << "Seleccione l para mostar la lista de los videos registrados" << endl;
+		cout << "Seleccione a para mostrar información sobre videos por autor" << endl;
+		cin >> option;
+		int id;
+		switch(option)
+		{ 
+			case 'p':
+				mostrarMaterias(materias, cantMaterias);
+				mostrarTemas(temas, cantTemas);
+				mostrarAutores(autores, cantAutores);
+				break;
+			case 's':
+				agregarVideo(videos, cantVideos, materias, cantMaterias, autores, cantAutores);
+				break;
+			case 't':
+				cout << "¿Qué tema quisiera consultar?" << endl;
+				cin >> id;
+				mostrarVideos(videos, cantVideos, temas, cantTemas);
+				break;
+			case 'm':
+				cout << "¿Qué materia quisiera consultar?" << endl;
+				cin >> id;
+				mostrarVideos(videos, cantVideos, materias, cantMaterias);
+				break;
+			case 'l':
+				listarVideos(videos, cantVideos);
+				break;
+			case 'a':
+				cout << "¿Qué autor quisiera consultar?" << endl;
+				cin >> id;
+				mostrarVideos(videos, cantVideos, autores, cantAutores);
+				break;
+			case 'q':
+				cout << "terminado" << endl;
+				running = false;
+				break;
+			default:
+				cout << "Porfavor seleccionar una opcion apropiada" << endl;
+		}
+		cout << endl;
+	}
+}
+
 /* main
  * Llama todas las otras funciones
  * Input: NONE
@@ -249,6 +326,7 @@ int main()
 		i++;
 	}
 	
-	//menu();
+	menu(materias, cantMaterias, temas, cantTemas, autores, cantAutores, videos, cantVideos);
+
 	return 0;
 }
