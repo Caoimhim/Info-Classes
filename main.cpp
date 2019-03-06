@@ -118,60 +118,34 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	{ 
 		return false;
 	}
-	string data; 
-	while(getline(inFile, data))
+	int idVideo, idTema, d, m, a, autoresLinea;
+	string nombre;
+	while(inFile >> idVideo >> nombre >> idTema >> d >> m >> a >> autoresLinea)
 	{ 
-		string buffer;
-
-		short int pos = data.find(" ");
-		int idVideo = strtol(data.substr(0,pos).c_str(), NULL, 10);
-
-		short int pos2 = data.find(" ", pos+1);
-		string nombre = data.substr(pos+1, pos2 - pos -1);
-
-		pos = data.find(" ", pos2+1);
-		buffer = data.substr(pos2+1, pos);
-		int idTema = strtol(buffer.c_str(), NULL, 10);
+		int inAutores[10];
+		int idAutor;
+		bool exists = true; 
+			
+		for (unsigned char i = 0; i < autoresLinea; i++)
+		{ 
+			inFile >> idAutor;
+	
+			if(!checkExists(idAutor, autores, autoresLinea))	
+			{ 
+				exists = false;	
+			}
+			inAutores[i] = idAutor;
+		}
 		if (checkExists(idTema, temas, cantTemas))
 		{ 
-	
-			pos2 = data.find(" ", pos+1);
-			buffer = data.substr(pos+1, pos2);
-			int d = strtol(buffer.c_str(), NULL, 10);
-	
-			pos = data.find(" ", pos2+1);
-			buffer = data.substr(pos2+1, pos);
-			int m = strtol(buffer.c_str(), NULL, 10);
-	
-			pos2 = data.find(" ", pos+1);
-			buffer = data.substr(pos+1, pos2);
-			int a = strtol(buffer.c_str(), NULL, 10);
-	
-			pos = data.find(" ", pos2+1);
-			buffer = data.substr(pos2+1, pos);
-			int cantAutores = strtol(buffer.c_str(), NULL, 10);
-	
-			data = data.substr(pos+1);
-			int inAutores[10];
-			int idAutor;
-			bool exists = true; 
-			for (unsigned char i = 0; i < cantAutores && exists; i++)
-			{ 
-				pos = data.find(" ");
-				idAutor = strtol(data.substr(0,pos).c_str(), NULL, 10);
-	
-				if(!checkExists(idAutor, autores, cantAutores))	
-				{ 
-					exists = false;	
-				}
-				inAutores[i] = idAutor;
-			}
 			if (!exists)
 			{ 
 				cout << "¡Advertencia! No se encontró el autor con la ID " << idAutor << endl;
 			}
 			else
 			{ 
+				cout << "writing...\n";
+				cout << idVideo << ' ' << nombre << ' ' << idTema << ' ' << d << '/' << m << '/' << a << ' ' << endl;
 				videos[cant].setIDVideo(idVideo);
 				videos[cant].setNombre(nombre);
 				videos[cant].setIDTema(idTema);
@@ -179,9 +153,10 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 				fechaElab.setFecha(d, m, a);
 				videos[cant].setfechaElaboracion(fechaElab);
 
-				for (unsigned char i = 0; i < cantAutores; i++)
+				for (unsigned char i = 0; i < autoresLinea; i++)
 				{ 
 					videos[cant].agregaAutor(inAutores[i]);
+					cout << inAutores[i];
 				}
 				cant++;
 			}
@@ -194,9 +169,20 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	return true;
 }
 
-void mostrarMaterias(Materia materias[5], short int cantMaterias);
+void mostrarMaterias(Materia materias[5], short int cantMaterias)
+{ 
+	cout << "\tMaterias" << endl;
+	for(unsigned char i = 0; i < cantMaterias; i++)
+	{ 
+		cout << "ID: " << materias[i].getID() << "\tNombre: " << materias[i].getNombre() << endl;
+	}
+	
+}
 
-void mostrarTemas(Tema temas[10], short int cantTemas);
+void mostrarTemas(Tema temas[10], short int cantTemas)
+{ 
+	
+}
 
 void mostrarAutores(Autor autores[10], short int cantAutores);
 
@@ -236,29 +222,29 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 		{ 
 			case 'p':
 				mostrarMaterias(materias, cantMaterias);
-				mostrarTemas(temas, cantTemas);
-				mostrarAutores(autores, cantAutores);
+				//mostrarTemas(temas, cantTemas);
+				//mostrarAutores(autores, cantAutores);
 				break;
 			case 's':
-				agregarVideo(videos, cantVideos, materias, cantMaterias, autores, cantAutores);
+				//agregarVideo(videos, cantVideos, materias, cantMaterias, autores, cantAutores);
 				break;
 			case 't':
 				cout << "¿Qué tema quisiera consultar?" << endl;
 				cin >> id;
-				mostrarVideos(videos, cantVideos, temas, cantTemas);
+				//mostrarVideos(videos, cantVideos, temas, cantTemas);
 				break;
 			case 'm':
 				cout << "¿Qué materia quisiera consultar?" << endl;
 				cin >> id;
-				mostrarVideos(videos, cantVideos, materias, cantMaterias);
+				//mostrarVideos(videos, cantVideos, materias, cantMaterias);
 				break;
 			case 'l':
-				listarVideos(videos, cantVideos);
+				//listarVideos(videos, cantVideos);
 				break;
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
 				cin >> id;
-				mostrarVideos(videos, cantVideos, autores, cantAutores);
+				//mostrarVideos(videos, cantVideos, autores, cantAutores);
 				break;
 			case 'q':
 				cout << "terminado" << endl;
