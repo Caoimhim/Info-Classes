@@ -39,6 +39,18 @@ bool checkExists(int autor, Autor autores[10], short int cant)
 	return false;
 }
 
+bool checkExists(int video, EjemploVideo videos[20], short int cant)
+{ 
+	for(short int i = 0; i < cant; i++)
+	{ 
+		if(video == videos[i].getIDVideo())
+		{ 
+			return true;
+		}
+	}
+	return false;
+}
+
 
 /* getData
  * Obtiene input the un archivo cuyo nombre es dado y lo lee en el formata ID Nombre
@@ -184,6 +196,11 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	return true;
 }
 
+/* mostrarMaterias
+ * Imprime a la pantalla toda la información acerca de las materias
+ * Inputs: El arreglo de materias y su tamaño
+ * Outputs: NONE
+ */
 void mostrarMaterias(Materia materias[5], short int cantMaterias)
 { 
 	cout << "\tMaterias" << endl;
@@ -196,6 +213,11 @@ void mostrarMaterias(Materia materias[5], short int cantMaterias)
 	
 }
 
+/* mostrarTemas
+ * Imprime a la pantalla toda la información acerca de los temas
+ * Input: El arreglo de los temas y su tamaño
+ * Output: NONE
+ */
 void mostrarTemas(Tema temas[10], short int cantTemas)
 { 
 	cout << "\tTemas" << endl;
@@ -207,7 +229,21 @@ void mostrarTemas(Tema temas[10], short int cantTemas)
 	cout << endl;
 }
 
-void mostrarAutores(Autor autores[10], short int cantAutores);
+/*mostrarAutores
+ * Imprime a la pantalla toda la información acerca de los autores
+ * Inputs: El arreglo de autores y su tamaño
+ * Outputs: NONE
+ */
+void mostrarAutores(Autor autores[10], short int cantAutores)
+{ 
+	cout << "\tAutores" << endl;
+	cout << "ID\tNombre" << endl;
+	for(unsigned char i = 0; i < cantAutores; i++)
+	{ 
+		cout <<  autores[i].getIDAutor() << '\t' << autores[i].getNombre() << endl;
+	}
+	cout << endl;
+}
 
 void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Materia materias[5], short int cantMaterias);
 
@@ -215,7 +251,67 @@ void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Autor auotres[
 
 void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas);
 
-void agregarVideo(EjemploVideo videos[20], short int cantVideos, Materia materias[5], short int cantMaterias, Autor autores[10], short int cantAutores);
+/* agregarVideo
+ * Pide al usario que entre la información acerca de un nuevo video a través de la consola.
+ * Valida todos los datos y no sale hasta que toda la información sea valida
+ * Inputs: El arreglo de videos, autores y temas
+ * Outputs: Escribe al arreglo de videos y su tamaño
+ */
+void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+{ 
+	cantVideos++;
+	int id;
+	cout << "Porfavor, entre la ID del nuevo video: ";
+	cin >> id;
+	while(checkExists(id, videos, cantVideos))
+	{ 
+		cout << "Ya existe un video con esa ID, porfavor, entre un ID único: " << endl;
+		cin >> id;
+	}
+	videos[cantVideos].setIDVideo(id);
+
+	string nombre;
+	cout << "¿Cuál es el nombre del nuevo video?" << endl;
+	cin >> nombre;
+	videos[cantVideos].setNombre(nombre);
+
+	cout << "¿Cuál es el ID del tema del video?" << endl;
+	cin >> id;
+	while(!checkExists(id, temas, cantTemas))
+	{ 
+		cout << "No existe un tema con ese ID, porfavor, entre un ID válido: ";
+		cin >> id;
+	}
+
+	int a, m, d;
+	cout << "Año de elaboración: ";
+	cin >> a;
+	cout << "Mes: ";
+	cin >> m;
+	cout << "Día: ";
+	cin >> d;
+	Fecha fechaElab;
+	fechaElab.setFecha(d, m, a);
+	videos[cantVideos].setfechaElaboracion(fechaElab);
+
+	int inAutores;
+	cout << "¿Cuántos autores tiene este video?" << endl;
+	cin >> inAutores;
+
+	for (short int i = 0; i < inAutores; i++)
+	{ 
+		cout << "¿Cuál es la ID del autor " << i + 1 << "?" << endl;
+		cin >> id;
+		while(!checkExists(id, autores, cantAutores))
+		{ 
+			cout << "No existe un autor con esa ID, profavor, entre un ID válido: ";
+			cin >> id;
+		}
+		videos[cantVideos].agregaAutor(id);
+	}
+
+	
+}
 
 void listarVideos(EjemploVideo videos[20], short int cantVideos);
 
@@ -234,7 +330,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 	{ 
 		char option;
 		cout << "Seleccione p para mostrar la información de autores, materias y temas" << endl;
-		cout << "Seleccione s para añadir un video" << endl;
+		cout << "Seleccione s para sumar un video" << endl;
 		cout << "Seleccione t para mostrar información sobre videos por tema" << endl;
 		cout << "Seleccione m para mostrar información sobre videos por tema" << endl;
 		cout << "Seleccione l para mostar la lista de los videos registrados" << endl;
@@ -242,18 +338,18 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 		cout << "Seleccione q para salir" << endl;
 		cin >> option;
 		int id;
-		switch(option)
+		switch(tolower(option))
 		{ 
 			case 'p':
 				mostrarMaterias(materias, cantMaterias);
 				mostrarTemas(temas, cantTemas);
-				//mostrarAutores(autores, cantAutores);
+				mostrarAutores(autores, cantAutores);
 				break;
 			case 's':
-				//agregarVideo(videos, cantVideos, materias, cantMaterias, autores, cantAutores);
+				agregarVideo(videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 't':
-				cout << "¿Qué tema quisiera consultar?" << endl;
+				//cout << "¿Qué tema quisiera consultar?" << endl;
 				cin >> id;
 				//mostrarVideos(videos, cantVideos, temas, cantTemas);
 				break;
