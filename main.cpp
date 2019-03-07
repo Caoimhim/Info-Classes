@@ -313,7 +313,6 @@ void mostrarAutores(Autor autores[10], short int cantAutores)
 //Por tema
 void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
 { 
-	bool found = false;
 	cout << "Videos con el tema " << id << endl;
 	for (unsigned char j = 0; j < cantVideos; j++)
 	{ 
