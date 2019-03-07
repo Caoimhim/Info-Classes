@@ -11,6 +11,7 @@ class Fecha
 		int getAA();
 
 		void setFecha(int d, int m, int a);
+		void muestra();
 		
 	private:
 		int dd, mm, aa;	
@@ -45,4 +46,9 @@ void Fecha::setFecha(int d, int m, int a)
 	dd = d;
 	mm = m;
 	aa = a;
+}
+
+void Fecha::muestra()
+{ 
+	cout << dd << '/' << mm << '/' << aa;
 }

@@ -11,6 +11,7 @@ class EjemploVideo
 		int getIDTema();
 		Fecha getFechasElaboracion();
 		int getlistaAutores(int index);
+		int getCantidadAutores();
 
 		void setIDVideo(int id);
 		void setNombre(string nom);
@@ -60,6 +61,10 @@ Fecha EjemploVideo::getFechasElaboracion()
 int EjemploVideo::getlistaAutores(int index)
 { 
 	return listaAutores[index];
+}
+int EjemploVideo::getCantidadAutores()
+{ 
+	return cantidadAutores;
 }
 
 void EjemploVideo::setIDVideo(int id)
