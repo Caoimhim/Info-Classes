@@ -51,7 +51,39 @@ bool checkExists(int video, EjemploVideo videos[20], short int cant)
 	return false;
 }
 
+/* buscarTema
+ * busca el tema en el arreglo de temas y regresa su nombre
+ * Input, la id a buscar, el arreglo de temas y su tamaño
+ * Outputs: string con el nombre del tema
+ */
+string buscarTema(int id, Tema temas[10], short int cant)
+{ 
+	for (unsigned char i = 0; i < cant; i++)
+	{ 
+		if (id == temas[i].getIDTema())
+		{ 
+			return temas[i].getNombre();
+		}
+	}
+	return "\0";
+}
 
+/* buscarAutor
+ * busca el autor en el arreglo de autor y regresa su nombre
+ * Input, la id a buscar, el arreglo de autor y su tamaño
+ * Outputs: string con el nombre del autor
+ */
+string buscarAutor(int id, Autor autores[10], short int cant)
+{ 
+	for (unsigned char i = 0; i < cant; i++)
+	{ 
+		if (id == autores[i].getIDAutor())
+		{ 
+			return autores[i].getNombre();
+		}
+	}
+	return "\0";
+}
 /* getData
  * Obtiene input the un archivo cuyo nombre es dado y lo lee en el formata ID Nombre
  * Inputs: El nombre del archivo
@@ -80,7 +112,7 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 		}
 		materias[cant++].setNombre(nombre);
 	}
-
+	inFile.close();
 	return true;
 }
 
@@ -108,6 +140,7 @@ bool getData(string fileName, Tema temas[10], short int &cant)
 		temas[cant++].setNombre(nombre);
 	}
 
+	inFile.close();
 	return true;
 }
 
@@ -133,6 +166,7 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 		autores[cant++].setNombre(nombre);
 	}
 
+	inFile.close();
 	return true;
 }
 
@@ -145,34 +179,60 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	{ 
 		return false;
 	}
-	int idVideo, idTema, d, m, a, autoresLinea;
-	string nombre;
-	while(inFile >> idVideo >> nombre >> idTema >> d >> m >> a >> autoresLinea)
+	string data; 
+	while(getline(inFile, data))
 	{ 
-		int inAutores[10];
-		int idAutor;
-		bool exists = true; 
-			
-		for (unsigned char i = 0; i < autoresLinea; i++)
-		{ 
-			inFile >> idAutor;
-	
-			if(!checkExists(idAutor, autores, autoresLinea))	
-			{ 
-				exists = false;	
-			}
-			inAutores[i] = idAutor;
-		}
+		string buffer;
+
+		short int pos = data.find(" ");
+		int idVideo = strtol(data.substr(0,pos).c_str(), NULL, 10);
+
+		short int pos2 = data.find(" ", pos+1);
+		string nombre = data.substr(pos+1, pos2 - pos -1);
+
+		pos = data.find(" ", pos2+1);
+		buffer = data.substr(pos2+1, pos);
+		int idTema = strtol(buffer.c_str(), NULL, 10);
 		if (checkExists(idTema, temas, cantTemas))
 		{ 
+	
+			pos2 = data.find(" ", pos+1);
+			buffer = data.substr(pos+1, pos2);
+			int d = strtol(buffer.c_str(), NULL, 10);
+	
+			pos = data.find(" ", pos2+1);
+			buffer = data.substr(pos2+1, pos);
+			int m = strtol(buffer.c_str(), NULL, 10);
+	
+			pos2 = data.find(" ", pos+1);
+			buffer = data.substr(pos+1, pos2);
+			int a = strtol(buffer.c_str(), NULL, 10);
+	
+			pos = data.find(" ", pos2+1);
+			buffer = data.substr(pos2+1, pos);
+			int cantAutores = strtol(buffer.c_str(), NULL, 10);
+	
+			data = data.substr(pos+1);
+			int inAutores[10];
+			int idAutor;
+			bool exists = true; 
+			for (unsigned char i = 0; i < cantAutores && exists; i++)
+			{ 
+				pos = data.find(" ");
+				idAutor = strtol(data.substr(0,pos).c_str(), NULL, 10);
+	
+				if(!checkExists(idAutor, autores, cantAutores))	
+				{ 
+					exists = false;	
+				}
+				inAutores[i] = idAutor;
+			}
 			if (!exists)
 			{ 
 				cout << "¡Advertencia! No se encontró el autor con la ID " << idAutor << endl;
 			}
 			else
 			{ 
-				cout << "writing...\n";
-				cout << idVideo << ' ' << nombre << ' ' << idTema << ' ' << d << '/' << m << '/' << a << ' ' << endl;
 				videos[cant].setIDVideo(idVideo);
 				videos[cant].setNombre(nombre);
 				videos[cant].setIDTema(idTema);
@@ -180,10 +240,9 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 				fechaElab.setFecha(d, m, a);
 				videos[cant].setfechaElaboracion(fechaElab);
 
-				for (unsigned char i = 0; i < autoresLinea; i++)
+				for (unsigned char i = 0; i < cantAutores; i++)
 				{ 
 					videos[cant].agregaAutor(inAutores[i]);
-					cout << inAutores[i];
 				}
 				cant++;
 			}
@@ -193,6 +252,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 			cout << "¡Advertencia! No se encontró el tema con la ID " << idTema << endl;
 		}
 	}
+	inFile.close();
 	return true;
 }
 
@@ -245,11 +305,39 @@ void mostrarAutores(Autor autores[10], short int cantAutores)
 	cout << endl;
 }
 
-void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Materia materias[5], short int cantMaterias);
+/* mostrarVideos
+ * imprime a la pantalla los detalles de un video, ua sea por clase, materia, o por autor
+ * Inputs: El arreglo de videos, la cantidad de videos, y el arreglo y cantidad del objeto por el cual se quiere consultar
+ * Outputs: NONE
+ */
+//Por tema
+void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+{ 
+	bool found = false;
+	cout << "Videos con el tema " << id << endl;
+	for (unsigned char j = 0; j < cantVideos; j++)
+	{ 
+		if (id == videos[j].getIDTema() )
+		{ 
+			cout << "ID:" << videos[j].getIDVideo() << endl;
+			cout << "Nombre:" << videos[j].getNombre() << endl;
+			cout << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
+			
+			videos[j].getFechasElaboracion().muestra();
+			cout << endl;
+			cout << "Autores: ";
+			for ( unsigned char k = 0; k < videos[j].getCantidadAutores(); k++)
+			{ 
+				cout << buscarAutor(videos[j].getlistaAutores(k), autores, cantAutores) << endl;
+			}
+			cout << endl;
+		}
+	}
+}
 
-void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Autor auotres[10], short int cantAutores);
+void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Autor autores[10], short int cantAutores);
 
-void mostrarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas);
+void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas);
 
 /* agregarVideo
  * Pide al usario que entre la información acerca de un nuevo video a través de la consola.
@@ -332,7 +420,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 		cout << "Seleccione p para mostrar la información de autores, materias y temas" << endl;
 		cout << "Seleccione s para sumar un video" << endl;
 		cout << "Seleccione t para mostrar información sobre videos por tema" << endl;
-		cout << "Seleccione m para mostrar información sobre videos por tema" << endl;
+		cout << "Seleccione m para mostrar información sobre videos por materia" << endl;
 		cout << "Seleccione l para mostar la lista de los videos registrados" << endl;
 		cout << "Seleccione a para mostrar información sobre videos por autor" << endl;
 		cout << "Seleccione q para salir" << endl;
@@ -349,14 +437,14 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 				agregarVideo(videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 't':
-				//cout << "¿Qué tema quisiera consultar?" << endl;
+				cout << "¿Qué tema quisiera consultar?" << endl;
 				cin >> id;
-				//mostrarVideos(videos, cantVideos, temas, cantTemas);
+				mostrarVideos(id, videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 'm':
 				cout << "¿Qué materia quisiera consultar?" << endl;
 				cin >> id;
-				//mostrarVideos(videos, cantVideos, materias, cantMaterias);
+				//mostrarVideos(id, videos, cantVideos, materias, cantMaterias);
 				break;
 			case 'l':
 				//listarVideos(videos, cantVideos);
@@ -364,7 +452,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
 				cin >> id;
-				//mostrarVideos(videos, cantVideos, autores, cantAutores);
+				//mostrarVideos(id, videos, cantVideos, autores, cantAutores);
 				break;
 			case 'q':
 				cout << "terminado" << endl;
