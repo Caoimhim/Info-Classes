@@ -1,0 +1,6 @@
+11 EjemplosParametros 1056 15 4 14 10 1 2 3 4 5 6 7 8 9 10
+44 RepasoApuntadores 1056 5 10 14 11 1 2 3 4 5 6 7 8 9 10 11
+55 QueEsUnParametro 4532 9 10 14 3 1 1 2
+12 EjemploEquivocado 1111 14 4 14 1 89
+2336 EjemploConError 4532 14 4 14 1 9
+666 CicloFor 2290 12 9 14 2 5 6
