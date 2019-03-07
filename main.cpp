@@ -100,12 +100,13 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 		return false;
 	}
 	
-	string data;
-	while(getline(inFile, data))
+	int id;
+	while(inFile >> id)
 	{ 
-		short int pos = data.find(" ");
-		materias[cant].setID(strtol(data.substr(0,pos).c_str(), NULL, 10));
-		string nombre = (data.substr(pos + 1));
+		materias[cant].setID(id);
+		string nombre;
+		getline(inFile, nombre);
+		nombre.erase(0, 1);
 		if (nombre[nombre.length() - 1] == '\r')
 		{ 
 			nombre.pop_back();
@@ -210,16 +211,17 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	
 			pos = data.find(" ", pos2+1);
 			buffer = data.substr(pos2+1, pos);
-			int cantAutores = strtol(buffer.c_str(), NULL, 10);
+			int lineAutores = strtol(buffer.c_str(), NULL, 10);
 	
 			data = data.substr(pos+1);
 			int inAutores[10];
 			int idAutor;
 			bool exists = true; 
-			for (unsigned char i = 0; i < cantAutores && exists; i++)
+			for (unsigned char i = 0; i < lineAutores && exists; i++)
 			{ 
 				pos = data.find(" ");
 				idAutor = strtol(data.substr(0,pos).c_str(), NULL, 10);
+				data = data.substr(pos+1);
 	
 				if(!checkExists(idAutor, autores, cantAutores))	
 				{ 
@@ -263,6 +265,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
  */
 void mostrarMaterias(Materia materias[5], short int cantMaterias)
 { 
+	cout << cantMaterias;
 	cout << "\tMaterias" << endl;
 	cout << "ID\tNombre" << endl;
 	for(unsigned char i = 0; i < cantMaterias; i++)
