@@ -486,28 +486,28 @@ int main()
 	while (i < 4)
 	{ 
 		bool exists;
-		string fileName;
+		//string fileName;
 		switch(i)
 		{ 
 			case 0:
 				cout << "¿Cuál es el nombre del archivo de materias" << endl;
-				cin >> fileName;
-				exists = getData(fileName, materias, cantMaterias);
+				//cin >> fileName;
+				exists = getData("materias.txt", materias, cantMaterias);
 				break;
 			case 1:
 				cout << "¿Cuál es el nombre del archivo de temas?" << endl;
-				cin >> fileName;
-				exists = getData(fileName, temas, cantTemas);
+				//cin >> fileName;
+				exists = getData("temas.txt", temas, cantTemas);
 				break;
 			case 2:
 				cout << "¿Cuál es el nombre del archivo de autores?" << endl;
-				cin >> fileName;
-				exists = getData(fileName, autores, cantAutores);
+				//cin >> fileName;
+				exists = getData("autores.txt", autores, cantAutores);
 				break;
 			case 3:
 				cout << "¿Cuál es el nombre del archivo de videos?" << endl;
-				cin >> fileName;
-				exists = getData(fileName, videos, cantVideos, temas, cantTemas, autores, cantAutores);
+				//cin >> fileName;
+				exists = getData("EjemploVideo.txt", videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 
 		}
