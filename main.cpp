@@ -265,7 +265,6 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
  */
 void mostrarMaterias(Materia materias[5], short int cantMaterias)
 { 
-	cout << cantMaterias;
 	cout << "\tMaterias" << endl;
 	cout << "ID\tNombre" << endl;
 	for(unsigned char i = 0; i < cantMaterias; i++)
@@ -321,23 +320,59 @@ void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema t
 	{ 
 		if (id == videos[j].getIDTema() )
 		{ 
-			cout << "ID:" << videos[j].getIDVideo() << endl;
-			cout << "Nombre:" << videos[j].getNombre() << endl;
-			cout << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
+			cout << "ID: " << videos[j].getIDVideo() << endl;
+			cout << "Nombre: " << videos[j].getNombre() << endl;
 			
 			videos[j].getFechasElaboracion().muestra();
 			cout << endl;
 			cout << "Autores: ";
 			for ( unsigned char k = 0; k < videos[j].getCantidadAutores(); k++)
 			{ 
-				cout << buscarAutor(videos[j].getlistaAutores(k), autores, cantAutores) << endl;
+				string autorNom = buscarAutor(videos[j].getlistaAutores(k), autores, cantAutores);
+				if (autorNom != "\0")
+				{ 
+					cout << autorNom << endl;
+				}
 			}
 			cout << endl;
 		}
 	}
 }
 
-void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Autor autores[10], short int cantAutores);
+//Por materia
+void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, Materia materias[10], short int cantMaterias)
+{ 
+	cout << "Videos con la materia " << id << endl;
+	for (unsigned char i = 0; i < cantTemas; i++)
+	{ 
+		if (temas[i].getIDMateria() == id)	
+		{ 
+			for (unsigned char j = 0; j < cantVideos; j++)
+			{ 
+				if(videos[j].getIDTema() == temas[i].getIDTema()) 
+				{ 
+					cout << "ID: " << videos[j].getIDVideo() << endl;
+					cout << "Nombre: " << videos[j].getNombre() << endl;
+					cout << "Tema: " << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
+			
+					videos[j].getFechasElaboracion().muestra();
+					cout << endl;
+					cout << "Autores: ";
+					for ( unsigned char k = 0; k < videos[j].getCantidadAutores(); k++)
+					{ 
+						string autorNom = buscarAutor(videos[j].getlistaAutores(k), autores, cantAutores);
+						if (autorNom != "\0")
+						{ 
+							cout << autorNom << endl;
+						}
+						
+					}
+					cout << endl;
+				}
+			}
+		}
+	}
+}
 
 void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas);
 
@@ -446,9 +481,10 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 			case 'm':
 				cout << "¿Qué materia quisiera consultar?" << endl;
 				cin >> id;
-				//mostrarVideos(id, videos, cantVideos, materias, cantMaterias);
+				mostrarVideos(id,videos, cantVideos, temas, cantTemas, autores, cantAutores, materias, cantMaterias);
 				break;
 			case 'l':
+				//TODO: Continue here!
 				//listarVideos(videos, cantVideos);
 				break;
 			case 'a':
