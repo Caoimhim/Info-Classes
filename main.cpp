@@ -374,7 +374,6 @@ void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema t
 	}
 }
 
-void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas);
 
 /* agregarVideo
  * Pide al usario que entre la información acerca de un nuevo video a través de la consola.
@@ -438,9 +437,34 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 	
 }
 
-void listarVideos(EjemploVideo videos[20], short int cantVideos);
-
-
+/* listarVideos
+ * Mustra todos los videos con sus datos
+ * Input: Arreglo de videos, temas, autores y materias con sus tamaños
+ * Output: NONE
+ */
+void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, Materia materias[5], short int cantMaterias)
+{
+	for(unsigned char j = 0; j < cantVideos; j++)
+	{ 
+		cout << "ID: " << videos[j].getIDVideo() << endl;
+		cout << "Nombre: " << videos[j].getNombre() << endl;
+		cout << "Tema: " << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
+			
+		videos[j].getFechasElaboracion().muestra();
+		cout << endl;
+		cout << "Autores: ";
+		for ( unsigned char k = 0; k < videos[j].getCantidadAutores(); k++)
+		{ 
+			string autorNom = buscarAutor(videos[j].getlistaAutores(k), autores, cantAutores);
+			if (autorNom != "\0")
+			{ 
+				cout << autorNom << endl;
+			}
+						
+		}
+		cout << endl;
+	}
+}
 
 /* menu
  * muesta el menú y llama las funciones requeridas para hacer las operaciones necesarias
@@ -485,7 +509,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 				break;
 			case 'l':
 				//TODO: Continue here!
-				//listarVideos(videos, cantVideos);
+				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores, materias, cantMaterias);
 				break;
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
