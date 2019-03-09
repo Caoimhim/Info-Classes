@@ -265,6 +265,8 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
  */
 void mostrarMaterias(Materia materias[5], short int cantMaterias)
 { 
+	cout << materias[3].getID();
+
 	cout << "\tMaterias" << endl;
 	cout << "ID\tNombre" << endl;
 	for(unsigned char i = 0; i < cantMaterias; i++)
@@ -313,7 +315,7 @@ void mostrarAutores(Autor autores[10], short int cantAutores)
  * Outputs: NONE
  */
 //Por tema
-void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Autor autores[10], short int cantAutores)
 { 
 	cout << "Videos con el tema " << id << endl;
 	for (unsigned char j = 0; j < cantVideos; j++)
@@ -340,7 +342,7 @@ void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema t
 }
 
 //Por materia
-void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, Materia materias[10], short int cantMaterias)
+void mostrarVideosPorMateria(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
 { 
 	cout << "Videos con la materia " << id << endl;
 	for (unsigned char i = 0; i < cantTemas; i++)
@@ -374,6 +376,37 @@ void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Tema t
 	}
 }
 
+
+void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+{ 
+	cout << "Videos con el autor " << id << endl;
+	for(unsigned char i = 0; i < cantVideos; i++)
+	{ 
+		for(unsigned char k =0; k < videos[i].getCantidadAutores(); k++)
+		{ 
+			if (videos[i].getlistaAutores(k) == id)
+			{ 
+				cout << "ID: " << videos[i].getIDVideo() << endl;
+				cout << "Nombre: " << videos[i].getNombre() << endl;
+				cout << "Tema: " << buscarTema(videos[i].getIDTema(), temas, cantTemas) << endl;
+	
+				videos[i].getFechasElaboracion().muestra();
+				cout << endl;
+				cout << "Autores: ";
+				for ( unsigned char y = 0; y < videos[i].getCantidadAutores(); y++)
+				{ 
+					string autorNom = buscarAutor(videos[i].getlistaAutores(y), autores, cantAutores);
+					if (autorNom != "\0")
+					{ 
+						cout << autorNom << endl;
+					}
+				
+				}
+				cout << endl;
+			}
+		}
+	}
+}
 
 /* agregarVideo
  * Pide al usario que entre la información acerca de un nuevo video a través de la consola.
@@ -442,7 +475,7 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
  * Input: Arreglo de videos, temas, autores y materias con sus tamaños
  * Output: NONE
  */
-void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, Materia materias[5], short int cantMaterias)
+void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
 {
 	for(unsigned char j = 0; j < cantVideos; j++)
 	{ 
@@ -500,21 +533,20 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 			case 't':
 				cout << "¿Qué tema quisiera consultar?" << endl;
 				cin >> id;
-				mostrarVideos(id, videos, cantVideos, temas, cantTemas, autores, cantAutores);
+				mostrarVideos(id, videos, cantVideos, autores, cantAutores);
 				break;
 			case 'm':
 				cout << "¿Qué materia quisiera consultar?" << endl;
 				cin >> id;
-				mostrarVideos(id,videos, cantVideos, temas, cantTemas, autores, cantAutores, materias, cantMaterias);
+				mostrarVideosPorMateria(id,videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 'l':
-				//TODO: Continue here!
-				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores, materias, cantMaterias);
+				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
 				cin >> id;
-				//mostrarVideos(id, videos, cantVideos, autores, cantAutores);
+				mostrarVideosAutor(id,videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 'q':
 				cout << "terminado" << endl;
