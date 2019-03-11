@@ -22,6 +22,7 @@ using namespace std;
  * Inputs: El arreglo de temas a revisar
  * Outputs: Verdadero o Falso
  */
+//Revisa Temas
 bool checkExists(int tema, Tema temas[10], short int cant)
 { 
 	for(short int i = 0; i < cant; i++)
@@ -34,6 +35,7 @@ bool checkExists(int tema, Tema temas[10], short int cant)
 	return false;
 }
 
+//Revisa Autores
 bool checkExists(int autor, Autor autores[10], short int cant)
 { 
 	for(short int i = 0; i < cant; i++)
@@ -46,6 +48,7 @@ bool checkExists(int autor, Autor autores[10], short int cant)
 	return false;
 }
 
+//Revisa videos
 bool checkExists(int video, EjemploVideo videos[20], short int cant)
 { 
 	for(short int i = 0; i < cant; i++)
@@ -97,6 +100,7 @@ string buscarAutor(int id, Autor autores[10], short int cant)
  * Outputs: Escribe a un arreglo de objetos (sobrecargada a para soportar los diferentes tipos), el arreglo donde se guardaran los datos, y una entero para guardar el numero de este.
  * Regresa verdadero si encuentra el archivo, falso si no
  */
+//Lee materias
 bool getData(string fileName, Materia materias[5], short int &cant)
 { 
 	cant = 0;
@@ -123,6 +127,7 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	return true;
 }
 
+//Lee temas
 bool getData(string fileName, Tema temas[10], short int &cant)
 { 
 	cant = 0;
@@ -151,6 +156,7 @@ bool getData(string fileName, Tema temas[10], short int &cant)
 	return true;
 }
 
+//Lee autores
 bool getData(string fileName, Autor autores[10], short int &cant)
 { 
 	cant = 0;
@@ -176,6 +182,7 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 	return true;
 }
 
+//Lee videos
 bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema temas[30], short int cantTemas, Autor autores[30], short int cantAutores)
 { 
 	cant = 0;
