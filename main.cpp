@@ -269,8 +269,6 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
  */
 void mostrarMaterias(Materia materias[5], short int cantMaterias)
 { 
-	cout << materias[3].getID();
-
 	cout << "\tMaterias" << endl;
 	cout << "ID\tNombre" << endl;
 	for(unsigned char i = 0; i < cantMaterias; i++)
@@ -278,7 +276,6 @@ void mostrarMaterias(Materia materias[5], short int cantMaterias)
 		cout <<  materias[i].getID() << '\t' << materias[i].getNombre() << endl;
 	}
 	cout << endl;
-	
 }
 
 /* mostrarTemas
