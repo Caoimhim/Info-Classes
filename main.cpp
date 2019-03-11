@@ -523,6 +523,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 		cout << "Seleccione q para salir" << endl;
 		cin >> option;
 		int id;
+		//Processing
 		switch(tolower(option))
 		{ 
 			case 'p':
@@ -584,52 +585,44 @@ int main()
 	while (i < 4)
 	{ 
 		bool exists;
-		//string fileName;
+		string fileName;
 		switch(i)
 		{ 
 			case 0:
 				cout << "¿Cuál es el nombre del archivo de materias" << endl;
-				/*
 				cin >> fileName;
 				if (fileName.find(".txt") == fileName.npos)
 				{ 
 					fileName.append(".txt");
 				}
-				*/
-				exists = getData("materias.txt", materias, cantMaterias);
+				exists = getData(fileName, materias, cantMaterias);
 				break;
 			case 1:
 				cout << "¿Cuál es el nombre del archivo de temas?" << endl;
-				/*
 				cin >> fileName;
 				if (fileName.find(".txt") == fileName.npos)
 				{ 
 					fileName.append(".txt");
 				}
-				*/
-				exists = getData("temas.txt", temas, cantTemas);
+				exists = getData(fileName, temas, cantTemas);
 				break;
 			case 2:
 				cout << "¿Cuál es el nombre del archivo de autores?" << endl;
-				/*
 				cin >> fileName;
 				if (fileName.find(".txt") == fileName.npos)
 				{ 
 					fileName.append(".txt");
 				}
-				*/
-				exists = getData("autores.txt", autores, cantAutores);
+				exists = getData(fileName, autores, cantAutores);
 				break;
 			case 3:
 				cout << "¿Cuál es el nombre del archivo de videos?" << endl;
-				/*
 				cin >> fileName;
 				if (fileName.find(".txt") == fileName.npos)
 				{ 
 					fileName.append(".txt");
 				}
-				*/
-				exists = getData("EjemploVideo.txt", videos, cantVideos, temas, cantTemas, autores, cantAutores);
+				exists = getData(fileName, videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 		}
 		if (!exists)
@@ -640,6 +633,7 @@ int main()
 		i++;
 	}
 	
+	//Output
 	menu(materias, cantMaterias, temas, cantTemas, autores, cantAutores, videos, cantVideos);
 
 	return 0;
