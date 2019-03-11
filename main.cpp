@@ -391,19 +391,6 @@ void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Te
 			{ 
 				cout << "ID: " << videos[i].getIDVideo() << endl;
 				cout << "Nombre: " << videos[i].getNombre() << endl;
-				cout << "Tema: " << buscarTema(videos[i].getIDTema(), temas, cantTemas) << endl;
-	
-				videos[i].getFechasElaboracion().muestra();
-				cout << endl;
-				cout << "Autores: ";
-				for ( unsigned char y = 0; y < videos[i].getCantidadAutores(); y++)
-				{ 
-					string autorNom = buscarAutor(videos[i].getlistaAutores(y), autores, cantAutores);
-					if (autorNom != "\0")
-					{ 
-						cout << autorNom << endl;
-					}
-				}
 				cout << endl;
 			}
 		}
@@ -418,7 +405,6 @@ void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Te
  */
 void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
 { 
-	cantVideos++;
 	int id;
 	cout << "Porfavor, entre la ID del nuevo video: ";
 	cin >> id;
@@ -428,10 +414,11 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 		cin >> id;
 	}
 	videos[cantVideos].setIDVideo(id);
+	cin.ignore();
 
 	string nombre;
 	cout << "¿Cuál es el nombre del nuevo video?" << endl;
-	cin >> nombre;
+	getline(cin, nombre);
 	videos[cantVideos].setNombre(nombre);
 
 	cout << "¿Cuál es el ID del tema del video?" << endl;
@@ -441,6 +428,7 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 		cout << "No existe un tema con ese ID, porfavor, entre un ID válido: ";
 		cin >> id;
 	}
+	videos[cantVideos].setIDTema(id);
 
 	int a, m, d;
 	cout << "Año de elaboración: ";
@@ -468,6 +456,7 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 		}
 		videos[cantVideos].agregaAutor(id);
 	}
+	cantVideos++;
 }
 
 /* listarVideos
