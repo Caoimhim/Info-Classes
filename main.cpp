@@ -321,11 +321,13 @@ void mostrarAutores(Autor autores[10], short int cantAutores)
 //Por tema
 void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Autor autores[10], short int cantAutores)
 { 
+	bool found = false;
 	cout << "Videos con el tema " << id << endl;
 	for (unsigned char j = 0; j < cantVideos; j++)
 	{ 
 		if (id == videos[j].getIDTema() )
 		{ 
+			found = true;
 			cout << "ID: " << videos[j].getIDVideo() << endl;
 			cout << "Nombre: " << videos[j].getNombre() << endl;
 			
@@ -343,11 +345,16 @@ void mostrarVideos(int id, EjemploVideo videos[20], short int cantVideos, Autor 
 			cout << endl;
 		}
 	}
+	if (!found)
+	{ 
+		cout << "No se encontraron videos con esta información" << endl;
+	}
 }
 
 //Por materia
 void mostrarVideosPorMateria(int id, EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
 { 
+	bool found = false;
 	cout << "Videos con la materia " << id << endl;
 	for (unsigned char i = 0; i < cantTemas; i++)
 	{ 
@@ -357,6 +364,7 @@ void mostrarVideosPorMateria(int id, EjemploVideo videos[20], short int cantVide
 			{ 
 				if(videos[j].getIDTema() == temas[i].getIDTema()) 
 				{ 
+					found = true;
 					cout << "ID: " << videos[j].getIDVideo() << endl;
 					cout << "Nombre: " << videos[j].getNombre() << endl;
 					cout << "Tema: " << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
@@ -377,11 +385,16 @@ void mostrarVideosPorMateria(int id, EjemploVideo videos[20], short int cantVide
 			}
 		}
 	}
+	if (!found)
+	{ 
+		cout << "No se encontraron videos con esta información" << endl;
+	}
 }
 
 //Por autor
-void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+void mostrarVideosAutor(int id, EjemploVideo videos[20], short int cantVideos)
 { 
+	bool found = false;
 	cout << "Videos con el autor " << id << endl;
 	for(unsigned char i = 0; i < cantVideos; i++)
 	{ 
@@ -389,11 +402,16 @@ void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Te
 		{ 
 			if (videos[i].getlistaAutores(k) == id)
 			{ 
+				found = true;
 				cout << "ID: " << videos[i].getIDVideo() << endl;
 				cout << "Nombre: " << videos[i].getNombre() << endl;
 				cout << endl;
 			}
 		}
+	}
+	if (!found)
+	{ 
+		cout << "No se encontraron videos con esta información" << endl;
 	}
 }
 
@@ -503,7 +521,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 		cout << "Seleccione s para sumar un video" << endl;
 		cout << "Seleccione t para mostrar información sobre videos por tema" << endl;
 		cout << "Seleccione m para mostrar información sobre videos por materia" << endl;
-		cout << "Seleccione l para mostar la lista de los videos registrados" << endl;
+		cout << "Seleccione l para mostrar la lista de los videos registrados" << endl;
 		cout << "Seleccione a para mostrar información sobre videos por autor" << endl;
 		cout << "Seleccione q para salir" << endl;
 		cin >> option;
@@ -534,7 +552,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
 				cin >> id;
-				mostrarVideosAutor(id,videos, cantVideos, temas, cantTemas, autores, cantAutores);
+				mostrarVideosAutor(id, videos, cantVideos);
 				break;
 			case 'q':
 				cout << "terminado" << endl;
