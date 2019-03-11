@@ -1,3 +1,10 @@
+/* Proyecto 2
+ * Provee una interface con la cuál interactuar con información de videos acerca de diferentes temas.
+ * Los videos se asocian con un tema y una lista de autores. Cada tema se asocia con diferentes materias.
+ * Kevin Daniel Chinchilla Flores
+ * A00825945
+ * 2019/03/10
+ */
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
@@ -99,7 +106,6 @@ bool getData(string fileName, Materia materias[5], short int &cant)
 	{ 
 		return false;
 	}
-	
 	int id;
 	while(inFile >> id)
 	{ 
@@ -166,7 +172,6 @@ bool getData(string fileName, Autor autores[10], short int &cant)
 		}
 		autores[cant++].setNombre(nombre);
 	}
-
 	inFile.close();
 	return true;
 }
@@ -196,7 +201,6 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 		int idTema = strtol(buffer.c_str(), NULL, 10);
 		if (checkExists(idTema, temas, cantTemas))
 		{ 
-	
 			pos2 = data.find(" ", pos+1);
 			buffer = data.substr(pos+1, pos2);
 			int d = strtol(buffer.c_str(), NULL, 10);
@@ -367,7 +371,6 @@ void mostrarVideosPorMateria(int id, EjemploVideo videos[20], short int cantVide
 						{ 
 							cout << autorNom << endl;
 						}
-						
 					}
 					cout << endl;
 				}
@@ -376,7 +379,7 @@ void mostrarVideosPorMateria(int id, EjemploVideo videos[20], short int cantVide
 	}
 }
 
-
+//Por autor
 void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
 { 
 	cout << "Videos con el autor " << id << endl;
@@ -400,7 +403,6 @@ void mostrarVideosAutor(int id,EjemploVideo videos[20], short int cantVideos, Te
 					{ 
 						cout << autorNom << endl;
 					}
-				
 				}
 				cout << endl;
 			}
@@ -466,8 +468,6 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 		}
 		videos[cantVideos].agregaAutor(id);
 	}
-
-	
 }
 
 /* listarVideos
@@ -493,7 +493,6 @@ void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10],
 			{ 
 				cout << autorNom << endl;
 			}
-						
 		}
 		cout << endl;
 	}
@@ -586,25 +585,48 @@ int main()
 		{ 
 			case 0:
 				cout << "¿Cuál es el nombre del archivo de materias" << endl;
-				//cin >> fileName;
+				/*
+				cin >> fileName;
+				if (fileName.find(".txt") == fileName.npos)
+				{ 
+					fileName.append(".txt");
+				}
+				*/
 				exists = getData("materias.txt", materias, cantMaterias);
 				break;
 			case 1:
 				cout << "¿Cuál es el nombre del archivo de temas?" << endl;
-				//cin >> fileName;
+				/*
+				cin >> fileName;
+				if (fileName.find(".txt") == fileName.npos)
+				{ 
+					fileName.append(".txt");
+				}
+				*/
 				exists = getData("temas.txt", temas, cantTemas);
 				break;
 			case 2:
 				cout << "¿Cuál es el nombre del archivo de autores?" << endl;
-				//cin >> fileName;
+				/*
+				cin >> fileName;
+				if (fileName.find(".txt") == fileName.npos)
+				{ 
+					fileName.append(".txt");
+				}
+				*/
 				exists = getData("autores.txt", autores, cantAutores);
 				break;
 			case 3:
 				cout << "¿Cuál es el nombre del archivo de videos?" << endl;
-				//cin >> fileName;
+				/*
+				cin >> fileName;
+				if (fileName.find(".txt") == fileName.npos)
+				{ 
+					fileName.append(".txt");
+				}
+				*/
 				exists = getData("EjemploVideo.txt", videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
-
 		}
 		if (!exists)
 		{ 
