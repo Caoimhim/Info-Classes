@@ -78,6 +78,18 @@ string buscarTema(int id, Tema temas[10], short int cant)
 	return "\0";
 }
 
+short int buscarTemaIndex(int id, Tema temas[10], short int cant)
+{ 
+	for (unsigned char i = 0; i < cant; i++)
+	{ 
+		if (id == temas[i].getIDTema())
+		{ 
+			return i;
+		}
+	}
+	return -1;
+}
+
 /* buscarAutor
  * busca el autor en el arreglo de autor y regresa su nombre
  * Input, la id a buscar, el arreglo de autor y su tamaño
@@ -226,6 +238,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	
 			data = data.substr(pos+1);
 			int inAutores[10];
+			int countinAutores = 0;
 			int idAutor;
 			bool exists = true; 
 			for (unsigned char i = 0; i < lineAutores && exists; i++)
@@ -238,7 +251,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 				{ 
 					exists = false;	
 				}
-				inAutores[i] = idAutor;
+				inAutores[countinAutores++] = idAutor;
 			}
 			if (!exists)
 			{ 
@@ -253,7 +266,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 				fechaElab.setFecha(d, m, a);
 				videos[cant].setfechaElaboracion(fechaElab);
 
-				for (unsigned char i = 0; i < cantAutores; i++)
+				for (unsigned char i = 0; i < countinAutores; i++)
 				{ 
 					videos[cant].agregaAutor(inAutores[i]);
 				}
@@ -471,12 +484,11 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 	{ 
 		cout << "¿Cuál es la ID del autor " << i + 1 << "?" << endl;
 		cin >> id;
-		while(!checkExists(id, autores, cantAutores))
+		while(!checkExists(id, autores, cantAutores) || !videos[cantVideos].agregaAutor(id))
 		{ 
-			cout << "No existe un autor con esa ID, profavor, entre un ID válido: ";
+			cout << "ID no es valida, profavor, entre un ID válido: ";
 			cin >> id;
 		}
-		videos[cantVideos].agregaAutor(id);
 	}
 	cantVideos++;
 }
@@ -486,13 +498,22 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
  * Input: Arreglo de videos, temas, autores y materias con sus tamaños
  * Output: NONE
  */
-void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, Materia materias[10], short int cantMaterias)
 {
 	for(unsigned char j = 0; j < cantVideos; j++)
 	{ 
 		cout << "ID: " << videos[j].getIDVideo() << endl;
 		cout << "Nombre: " << videos[j].getNombre() << endl;
 		cout << "Tema: " << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
+		cout << "Materia: ";
+		for (unsigned char i = 0; i < cantMaterias; i++)
+		{ 
+			if (materias[i].getID() == temas[buscarTemaIndex(videos[j].getIDTema(), temas, cantTemas)].getIDMateria() )
+			{ 
+				cout << materias[i].getNombre() << endl;
+	
+			}
+		}
 			
 		videos[j].getFechasElaboracion().muestra();
 		cout << endl;
@@ -552,7 +573,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 				mostrarVideosPorMateria(id,videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 'l':
-				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores);
+				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores, materias, cantMaterias);
 				break;
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
