@@ -226,6 +226,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 	
 			data = data.substr(pos+1);
 			int inAutores[10];
+			int countinAutores = 0;
 			int idAutor;
 			bool exists = true; 
 			for (unsigned char i = 0; i < lineAutores && exists; i++)
@@ -238,7 +239,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 				{ 
 					exists = false;	
 				}
-				inAutores[i] = idAutor;
+				inAutores[countinAutores++] = idAutor;
 			}
 			if (!exists)
 			{ 
@@ -253,7 +254,7 @@ bool getData(string fileName, EjemploVideo videos[20], short int &cant, Tema tem
 				fechaElab.setFecha(d, m, a);
 				videos[cant].setfechaElaboracion(fechaElab);
 
-				for (unsigned char i = 0; i < cantAutores; i++)
+				for (unsigned char i = 0; i < countinAutores; i++)
 				{ 
 					videos[cant].agregaAutor(inAutores[i]);
 				}
@@ -471,12 +472,11 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
 	{ 
 		cout << "¿Cuál es la ID del autor " << i + 1 << "?" << endl;
 		cin >> id;
-		while(!checkExists(id, autores, cantAutores))
+		while(!checkExists(id, autores, cantAutores) || !videos[cantVideos].agregaAutor(id))
 		{ 
-			cout << "No existe un autor con esa ID, profavor, entre un ID válido: ";
+			cout << "ID no es valida, profavor, entre un ID válido: ";
 			cin >> id;
 		}
-		videos[cantVideos].agregaAutor(id);
 	}
 	cantVideos++;
 }
