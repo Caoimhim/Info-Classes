@@ -78,6 +78,18 @@ string buscarTema(int id, Tema temas[10], short int cant)
 	return "\0";
 }
 
+short int buscarTemaIndex(int id, Tema temas[10], short int cant)
+{ 
+	for (unsigned char i = 0; i < cant; i++)
+	{ 
+		if (id == temas[i].getIDTema())
+		{ 
+			return i;
+		}
+	}
+	return -1;
+}
+
 /* buscarAutor
  * busca el autor en el arreglo de autor y regresa su nombre
  * Input, la id a buscar, el arreglo de autor y su tamaño
@@ -486,13 +498,22 @@ void agregarVideo(EjemploVideo videos[20], short int &cantVideos, Tema temas[10]
  * Input: Arreglo de videos, temas, autores y materias con sus tamaños
  * Output: NONE
  */
-void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores)
+void listarVideos(EjemploVideo videos[20], short int cantVideos, Tema temas[10], short int cantTemas, Autor autores[10], short int cantAutores, Materia materias[10], short int cantMaterias)
 {
 	for(unsigned char j = 0; j < cantVideos; j++)
 	{ 
 		cout << "ID: " << videos[j].getIDVideo() << endl;
 		cout << "Nombre: " << videos[j].getNombre() << endl;
 		cout << "Tema: " << buscarTema(videos[j].getIDTema(), temas, cantTemas) << endl;
+		cout << "Materia: ";
+		for (unsigned char i = 0; i < cantMaterias; i++)
+		{ 
+			if (materias[i].getID() == temas[buscarTemaIndex(videos[j].getIDTema(), temas, cantTemas)].getIDMateria() )
+			{ 
+				cout << materias[i].getNombre() << endl;
+	
+			}
+		}
 			
 		videos[j].getFechasElaboracion().muestra();
 		cout << endl;
@@ -552,7 +573,7 @@ void menu(Materia materias[5], short int cantMaterias, Tema temas[10], short int
 				mostrarVideosPorMateria(id,videos, cantVideos, temas, cantTemas, autores, cantAutores);
 				break;
 			case 'l':
-				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores);
+				listarVideos(videos, cantVideos, temas, cantTemas, autores, cantAutores, materias, cantMaterias);
 				break;
 			case 'a':
 				cout << "¿Qué autor quisiera consultar?" << endl;
